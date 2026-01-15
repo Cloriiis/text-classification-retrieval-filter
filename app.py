@@ -194,8 +194,20 @@ if (query or search_btn) and vector_db:
         
         for doc in final_results:
             cat_tag = doc.metadata.get('category')
+            # 获取纯文件名用于显示
             file_name = doc.metadata['source'].split('/')[-1]
+            # 获取完整文件路径用于查找全文
+            full_file_path = doc.metadata['source']
             
+            # --- 🆕 核心修改：查找原始全文 ---
+            # 在 raw_docs 中遍历，找到 source 路径完全一样的那个文件，取出它的 page_content
+            full_content = "暂无全文内容"
+            for raw_doc in raw_docs:
+                if raw_doc.metadata['source'] == full_file_path:
+                    full_content = raw_doc.page_content
+                    break
+            # ----------------------------------
+
             # 使用 HTML 构建“谷歌学术”风格的列表
             st.markdown(f"""
             <div class="result-item">
@@ -205,14 +217,16 @@ if (query or search_btn) and vector_db:
                     &nbsp; • &nbsp; Relevance Match
                 </div>
                 <div class="result-snippet">
-                    ...{doc.page_content}...
+                    ...{doc.page_content}... 
                 </div>
             </div>
             """, unsafe_allow_html=True)
             
-            # 使用原生 expander 查看全文 (折叠起来保持干净)
-            with st.expander("View Full Context"):
-                st.text(doc.page_content)
+            # 使用原生 expander 查看全文
+            # 这里的 full_content 已经是真正的全文了
+            with st.expander("📖 View Full Document Content (点击查看完整文章)"):
+                st.markdown(full_content) # 这里改成了 markdown 以便更好地显示段落
+                st.caption(f"File Path: {full_file_path}")
 
 elif not vector_db:
     st.error("Database Error: Please check data directory.")
