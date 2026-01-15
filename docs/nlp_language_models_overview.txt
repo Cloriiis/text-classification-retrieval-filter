@@ -1,0 +1,7 @@
+【综述】自然语言处理（NLP）：从规则引擎到 GPT
+
+    让机器理解人类语言一直是人工智能（Intelligence）皇冠上的明珠。几十年来，科学家们尝试了语法规则、统计模型等多种方法，但直到深度神经网络（Neural Networks）的引入，NLP 才迎来了真正的爆发。
+    
+    现在的自然语言处理不再依赖繁琐的人工特征工程，而是通过在海量文本上进行无监督学习（Learning）。GPT（Generative Pre-trained Transformer）就是这一范式的巅峰之作。它证明了只要模型足够大、数据量足够多，机器就能涌现出惊人的理解力。
+    
+    Python 是 NLP 领域的通用语言，NLTK、SpaCy 和 Hugging Face 等库极大地简化了开发流程。无论是情感分析、机器翻译还是聊天机器人（Robotics），开发者都可以通过几行 Python 代码调用云端（Cloud）的强大模型 API 来实现。
