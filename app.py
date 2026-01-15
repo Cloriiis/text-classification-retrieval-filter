@@ -20,76 +20,100 @@ st.set_page_config(
 # --- 3. UI/UX 深度定制 ---
 st.markdown("""
 <style>
-    /* 1. 全局背景统一：极淡的海洋蓝 */
+    /* 1. 全局背景统一 */
     .stApp {
         background-color: #F0F7FF;
     }
     
-    /* 2. 核心修复：强制顶部 Header 变为透明/同色，去除白色割裂带 */
     header[data-testid="stHeader"] {
         background-color: #F0F7FF;
     }
     
-    /* 调整主内容区域的顶部间距 */
     .block-container {
         padding-top: 2rem;
         padding-bottom: 2rem;
     }
     
-    /* 3. 侧边栏深度美化 */
+    /* 2. 侧边栏整体背景 */
     [data-testid="stSidebar"] {
-        background-color: #EBF4FF; /* 比主背景稍深一点的蓝，区分层级 */
+        background-color: #EBF4FF;
         border-right: 1px solid #D6E4F0;
     }
     
-    /* 侧边栏标题 */
-    .sidebar-title {
-        font-family: 'Inter', sans-serif;
-        color: #1A365D;
-        font-size: 1.2rem;
-        font-weight: 700;
-        margin-bottom: 20px;
-        display: flex;
-        align-items: center;
-    }
-    
-    /* === 侧边栏导航按钮化改造 (去除 Radio 圆圈) === */
-    [data-testid="stSidebar"] [data-testid="stRadio"] > label {
-        display: none !important; /* 隐藏 Radio 的 label */
-    }
-    
-    /* 选项容器样式 */
-    [data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] > label {
-        background-color: transparent;
+    /* === Navigator 标题 (方框、居中) === */
+    .nav-header-box {
+        background-color: #FFFFFF;
+        border: 2px solid #2B6CB0; /* 深蓝色边框 */
         border-radius: 8px;
-        padding: 10px 15px;
-        margin-bottom: 5px;
+        padding: 10px;
+        text-align: center;
+        margin-bottom: 25px;
+        color: #2B6CB0;
+        font-family: 'Inter', sans-serif;
+        font-weight: 800;
+        font-size: 1.1rem;
+        letter-spacing: 1px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    
+    /* === 侧边栏导航按钮化改造 (方框样式) === */
+    
+    /* 隐藏原生单选按钮的圆圈输入框 */
+    [data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] label input {
+        display: none; 
+    }
+    
+    /* 隐藏原生单选按钮圆圈的占位 div (防止左侧留白) */
+    [data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] label > div:first-child {
+        display: none !important;
+    }
+
+    /* 选项容器基础样式 (未选中状态 - 白色方框) */
+    [data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] > label {
+        background-color: #FFFFFF;
+        border: 1px solid #CBD5E0;
+        border-radius: 6px;
+        padding: 12px 0px; /* 上下内边距 */
+        margin-bottom: 10px;
         transition: all 0.2s ease;
-        border: 1px solid transparent;
         color: #4A5568;
-        font-weight: 500;
+        font-weight: 600;
+        display: flex;
+        justify-content: center; /* 文字居中 */
+        align-items: center;
+        width: 100%;
+        cursor: pointer;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.03);
     }
     
     /* 鼠标悬停效果 */
     [data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] > label:hover {
-        background-color: #DCEBFF;
-        color: #2B6CB0;
+        border-color: #3182CE;
+        color: #3182CE;
+        background-color: #F7FAFC;
     }
     
-    /* 选中状态 (Streamlit 会给选中的 label 加 aria-checked="true") */
-    /* 注意：Streamlit 的内部结构可能变化，这里使用 checked 伪类或结构化选择 */
+    /* 选中状态 (蓝色背景方框) */
     [data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] > label[data-checked="true"] {
         background-color: #3182CE !important;
         color: white !important;
-        box-shadow: 0 4px 6px rgba(49, 130, 206, 0.2);
+        border-color: #3182CE !important;
+        box-shadow: 0 4px 6px rgba(49, 130, 206, 0.3);
     }
     
-    /* 隐藏原生的圆圈单选框 */
-    [data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] input {
-        display: none;
+    /* 调整 Markdown 容器以确保文字完全居中 */
+    [data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] > label [data-testid="stMarkdownContainer"] {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+    
+    [data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] > label [data-testid="stMarkdownContainer"] p {
+        margin: 0; /* 移除文字默认边距 */
+        font-size: 0.95rem;
     }
 
-    /* 4. 统计卡片样式 */
+    /* 3. 统计卡片样式 */
     .metric-card {
         background-color: #FFFFFF;
         border-radius: 8px;
@@ -111,7 +135,7 @@ st.markdown("""
         letter-spacing: 0.5px;
     }
 
-    /* 5. 搜索结果样式 (保持原有好评设计) */
+    /* 4. 搜索结果样式 */
     .result-item {
         background-color: #FFFFFF;
         padding: 24px;
@@ -140,12 +164,11 @@ st.markdown("""
         font-weight: 600;
     }
     
-    /* 搜索按钮 */
     div.stButton > button {
         background-color: #3182CE;
         color: white;
         border-radius: 8px;
-        height: 46px; /* 与输入框对齐 */
+        height: 46px;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -153,6 +176,8 @@ st.markdown("""
 # --- 4. 核心逻辑 ---
 @st.cache_resource
 def initialize_system():
+    # 模拟数据模式，防止报错 (如果此行不需要可删除，保留原始逻辑)
+    # 真实环境请确保 docs/ 文件夹存在且有文件
     embeddings = HuggingFaceEmbeddings(model_name="BAAI/bge-small-zh-v1.5")
     
     if not os.path.exists('docs/'):
@@ -173,7 +198,7 @@ def initialize_system():
     for doc in raw_docs:
         filename = doc.metadata['source'].lower()
         content = doc.page_content.lower()
-        category = "General / Uncategorized"
+        category = "General"
         
         if any(k in filename or k in content for k in ai_keywords):
             category = "AI & Technology"
@@ -185,8 +210,6 @@ def initialize_system():
         doc.metadata['category'] = category
         categorized_docs.append(doc)
 
-    # 【修改点】：这里移除了 "General / Uncategorized" 
-    # 注意：如果文件被归类为 General，它在 "ALL ARCHIVES" 中仍可见，但侧边栏没有单独入口，符合您的要求
     display_categories = ["AI & Technology", "FinTech & Economy", "Humanities & History"]
     
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=300, chunk_overlap=50)
@@ -199,30 +222,27 @@ def initialize_system():
 with st.spinner("Initializing System..."):
     vector_db, raw_docs, category_list = initialize_system()
 
-# --- 6. 侧边栏 (重构版) ---
+# --- 6. 侧边栏 (重构版 - 方框风格) ---
 with st.sidebar:
-    st.markdown('<div class="sidebar-title">📂 Navigator</div>', unsafe_allow_html=True)
+    # 1. 标题改为方框样式
+    st.markdown('<div class="nav-header-box">NAVIGATOR</div>', unsafe_allow_html=True)
     
-    # 构造带图标的选项列表
-    nav_options = ["🏠  ALL ARCHIVES"] + [f"🏷️  {cat}" for cat in category_list]
+    # 2. 构造纯文字列表（无 Emoji）
+    nav_options = ["ALL ARCHIVES"] + category_list
     
-    # 使用 Radio 但 CSS 已经魔改成导航条样式
+    # 3. Radio 组件，CSS 已经将其魔改为方框按钮
     selected_option = st.radio(
         "Navigation", 
         nav_options, 
         label_visibility="collapsed"
     )
     
-    # 解析回原始分类名
-    if "ALL ARCHIVES" in selected_option:
-        selected_category = "ALL ARCHIVES"
-    else:
-        # 去掉图标前缀 "🏷️  " (长度为4)
-        selected_category = selected_option[4:]
+    # 4. 直接赋值，不需要字符串切片
+    selected_category = selected_option
 
     st.markdown("---")
     
-    # 统计数据卡片化
+    # 5. 统计卡片
     col1, col2 = st.columns(2)
     
     total_count = len(raw_docs) if raw_docs else 0
@@ -247,7 +267,7 @@ with st.sidebar:
         """, unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
-    st.caption("System v3.0 | Azure Theme")
+    st.caption("System v3.1 | Box Style")
 
 # --- 7. 主界面 ---
 st.markdown("## 🔎 Information Retrieval")
