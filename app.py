@@ -21,78 +21,91 @@ st.set_page_config(
 # --- 3. CSS 深度定制 (去卡片化，走专业文档风) ---
 st.markdown("""
 <style>
-    /* 全局字体与背景 - 更加冷淡严谨 */
+    /* 深色主题背景 */
     .stApp {
-        background-color: #FAFAFA;
+        background-color: #0F172A; /* Slate-900 */
     }
     
-    /* 侧边栏样式重置 */
+    /* 侧边栏深色 */
     [data-testid="stSidebar"] {
-        background-color: #F0F2F6;
-        border-right: 1px solid #E0E0E0;
+        background-color: #0B1220; /* 深海蓝 */
+        border-right: 1px solid #1F2937;
     }
     
-    /* 标题样式 - 深色衬线体 */
+    /* 标题颜色在深色背景下更亮 */
     h1, h2, h3 {
-        color: #262730;
-        font-family: 'Helvetica Neue', sans-serif;
+        color: #E5E7EB;
+        font-family: 'Inter', 'Helvetica Neue', sans-serif;
     }
     
-    /* 搜索结果列表项样式 (替代之前的 Card) */
+    /* 搜索结果为分隔线列表样式 */
     .result-item {
         padding: 15px 0;
-        border-bottom: 1px solid #E6E6E6;
+        border-bottom: 1px solid #334155; /* Slate-700 */
     }
     .result-title {
         font-size: 1.1rem;
         font-weight: 600;
-        color: #1A73E8; /* Google Link Blue */
+        color: #60A5FA; /* 蓝色链接 */
         margin-bottom: 5px;
     }
     .result-meta {
         font-size: 0.85rem;
-        color: #5F6368;
+        color: #94A3B8; /* 浅灰蓝 */
         font-family: monospace;
         margin-bottom: 8px;
     }
     .result-snippet {
         font-size: 0.95rem;
-        color: #3C4043;
-        line-height: 1.5;
+        color: #CBD5E1; /* 更亮的正文 */
+        line-height: 1.55;
     }
     
-    /* 隐藏 Streamlit 默认的按钮边框，让界面更干净 */
+    /* 按钮样式：墨绿色在深色背景下更稳重 */
     div.stButton > button {
-        border-radius: 4px;
-        background-color: #008080; /* Teal Color */
+        border-radius: 6px;
+        background-color: #0D9488; /* teal-600 */
         color: white;
         border: none;
+        transition: all 0.2s ease;
     }
     div.stButton > button:hover {
-        background-color: #006666;
+        background-color: #0F766E; /* teal-700 */
     }
 
+    /* 输入框在深色背景下的样式 */
+    .stTextInput input {
+        background-color: #111827; /* 灰黑 */
+        color: #E5E7EB;
+        border: 1px solid #374151;
+    }
+    .stTextInput input::placeholder { color: #9CA3AF; }
+    .stTextInput input:focus { border-color: #60A5FA !important; }
+
     /* 侧边栏类别选择：将 Radio 渲染为方框交互 */
-    [data-testid="stSidebar"] [data-testid="stRadio"] > div {
+    [data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] {
         display: flex;
-        flex-wrap: wrap;
+        flex-direction: column;
         gap: 8px;
     }
-    [data-testid="stSidebar"] [role="radio"] {
-        padding: 8px 12px;
-        border: 1px solid #D0D0D0;
-        border-radius: 6px;
-        background-color: #FFFFFF;
-        color: #333333;
+    [data-testid="stSidebar"] div[role="radio"] {
+        padding: 10px 12px;
+        border: 1px solid #475569; /* Slate-600 */
+        border-radius: 8px;
+        background-color: #0F172A;
+        color: #E5E7EB;
+        cursor: pointer;
         transition: background-color .2s ease, color .2s ease, border-color .2s ease;
     }
-    [data-testid="stSidebar"] [role="radio"][aria-checked="true"] {
-        background-color: #2F3C56; /* 深色选中态 */
+    [data-testid="stSidebar"] div[role="radio"][aria-checked="true"] {
+        background-color: #334155; /* 选中深色 */
         color: #FFFFFF;
-        border-color: #2F3C56;
+        border-color: #334155;
     }
-    /* 隐藏默认圆点图标 */
-    [data-testid="stSidebar"] [role="radio"] svg { display: none; }
+    /* 隐藏默认圆点或图标 */
+    [data-testid="stSidebar"] div[role="radio"] svg { display: none !important; }
+    [data-testid="stSidebar"] div[role="radio"]::before { content: none !important; }
+    
 </style>
 """, unsafe_allow_html=True)
 
