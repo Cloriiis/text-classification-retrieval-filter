@@ -1,94 +1,74 @@
 import os
 
-# 目标文件夹
+# 目标文件夹 - 确保这里是你重命名后的文件夹名
 output_dir = "docs"
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
-# --- 新闻与博客数据集 ---
-# 这里的 Key 是文件名（包含英文关键词以便分类），Value 是文章内容
+# --- 深度新闻与长篇博客数据集 ---
 news_data = {
     # ==========================================
-    # 类别 1: AI (关键词: learning, neural, intelligence, gpt, python, data, cloud)
+    # 类别 1: AI & Technology (关键词: learning, neural, intelligence, gpt, python, cloud, robotics)
     # ==========================================
-    "tech_blog_gpt_update.txt": """【科技快讯】OpenAI发布更强大的GPT-5预览版
-    OpenAI今天宣布了其生成式AI（Generative AI）模型的最新迭代。新的GPT模型在推理能力和代码生成方面有了显著提升。许多Python开发者表示，这极大地提高了生产力。""",
-
-    "cloud_data_center_news.txt": """【行业分析】云计算（Cloud Computing）基础设施面临新的数据挑战
-    随着大数据（Big Data）时代的到来，传统的数据中心正在经历转型。亚马逊AWS和微软Azure正在扩建新的服务器集群，以应对AI训练带来的巨大算力需求。""",
-
-    "python_learning_tutorial.txt": """【博主分享】为什么Python是2026年最值得学习的语言？
-    对于初学者来说，Python的语法简洁，生态丰富。无论是从事数据分析（Data Analysis）还是机器学习（Machine Learning），Python都是绕不开的工具。""",
-
-    "deep_learning_breakthrough.txt": """【学术前沿】深度学习（Deep Learning）在医疗影像中的新突破
-    研究人员开发了一种新的神经网络（Neural Network）架构，能够比人类医生更早地发现肺部病变。这一人工智能（Intelligence）应用有望挽救数百万人的生命。""",
-
-    "neural_link_update.txt": """【未来科技】脑机接口与神经（Neural）科学的结合
-    埃隆·马斯克的Neuralink公司展示了最新的植入式设备。该设备试图通过读取神经信号来实现人脑与计算机的直接交互，这被认为是人工智能（Intelligence）的终极形态之一。""",
+    "tech_deep_dive_gpt_future.txt": """【深度评论】GPT-5：通往通用人工智能的下一个里程碑
     
-    "machine_learning_ops.txt": """【DevOps】MLOps：机器学习（Machine Learning）运维的最佳实践
-    随着企业将AI模型投入生产环境，如何管理数据（Data）流和模型版本变得至关重要。""",
+    在过去的几个月里，关于GPT系列模型进化的讨论从未停止。随着计算能力的指数级增长，生成式人工智能（Generative Intelligence）正从简单的文本预测转向复杂的逻辑推理。最新的测试数据显示，新的GPT架构在处理多步数学证明和高级代码重构方面表现惊人。
     
-    "data_science_trends.txt": """【职场观察】2026年数据科学（Data Science）就业趋势
-    企业对能够处理非结构化数据和构建预测模型的专家需求激增。掌握Python和SQL依然是入行的硬门槛。""",
+    对于开发者社区而言，Python 依然是这一变革的核心工具。无论是构建底层的神经网络（Neural Networks）还是调用复杂的 API 接口，Python 简洁的语法和强大的生态系统都无可替代。同时，机器学习（Machine Learning）的民主化进程正在加速，越来越多的非技术企业开始利用这些模型来优化其业务流程。然而，随着模型规模的不断扩大，对算力的渴求也推高了云计算（Cloud Computing）服务的成本。未来的挑战在于如何在保持智能水平的同时，降低模型运行的能耗。""",
 
-    "intelligent_robotics.txt": """【机器人】具身智能（Embodied Intelligence）是下一个风口吗？
-    将大模型植入机器人大脑，让它们能够理解复杂的自然语言指令，是目前AI领域最热门的研究方向。""",
-
-    # ==========================================
-    # 类别 2: 金融科技 (关键词: blockchain, bitcoin, payment, finance, wallet, economy, bank)
-    # 这里的关键词需要我们在 app.py 里同步更新！
-    # ==========================================
-    "fintech_blockchain_revolution.txt": """【金融观察】区块链（Blockchain）技术如何重塑跨境支付？
-    传统的SWIFT系统转账慢、费用高。基于区块链技术的分布式账本方案，正在让跨境金融（Finance）交易变得像发邮件一样即时和低成本。""",
-
-    "bitcoin_market_analysis.txt": """【加密货币】比特币（Bitcoin）再次突破历史新高
-    受机构投资者入场影响，数字货币市场迎来新一轮牛市。分析师认为，去中心化金融（DeFi）正在成为全球经济（Economy）中不可忽视的力量。""",
-
-    "digital_wallet_payment.txt": """【移动支付】电子钱包（Digital Wallet）正在消灭现金
-    在亚洲和非洲，移动支付（Payment）的普及率已经超过了信用卡。手机即银行（Bank）的概念正在改变人们的消费习惯。""",
-
-    "finance_ai_trading.txt": """【量化交易】AI算法正在接管华尔街金融（Finance）市场
-    高频交易公司正在利用深度学习预测股票走势。在现代经济（Economy）体系中，毫秒级的速度优势就意味着巨大的利润。""",
-
-    "central_bank_digital_currency.txt": """【政策解读】央行（Bank）数字货币（CBDC）的试点进展
-    多国中央银行正在加速研发法定数字货币。这将对现有的商业银行体系和第三方支付（Payment）平台产生深远影响。""",
-
-    "defi_economy_report.txt": """【Web3】去中心化金融与创作者经济（Economy）
-    通过智能合约，创作者可以直接获得版税收入，而无需经过中介。这是区块链（Blockchain）技术对传统商业模式的降维打击。""",
-
-    "mobile_payment_security.txt": """【安全警示】如何保护你的电子钱包（Wallet）安全？
-    随着移动支付（Payment）的普及，新型诈骗手段层出不穷。专家建议开启生物识别验证并定期更换密码。""",
+    "robotics_and_embodied_ai.txt": """【前沿周刊】具身智能与下一代工业机器人（Robotics）
     
-    "global_economy_trends.txt": """【宏观经济】全球经济（Economy）复苏面临的挑战
-    通货膨胀和供应链危机依然困扰着各大经济体。金融（Finance）政策的调整将直接影响股市和楼市的走向。""",
+    机器人学（Robotics）正处于一个转折点。传统的机器人只能在预设的环境中执行重复任务，但集成人工智能（Intelligence）的新型机器人正在学习如何与物理世界进行自然交互。这种被称为“具身智能”的技术，核心在于让机器具备类似于人类的感知-反馈循环。
+    
+    通过强化学习（Reinforcement Learning），这些机器人可以在虚拟仿真环境中模拟数百万次的动作尝试，从而在现实世界中实现更平稳的行走和更精准的抓取。许多这些训练框架都是基于 Python 开发的，利用其强大的物理仿真库。未来，随着神经（Neural）形态芯片的成熟，机器人有望在断网的情况下依然保持高度的自主决策能力。这不仅仅是硬件的升级，更是人工智能进化史上的一次飞跃。""",
+
+    "cloud_infrastructure_2026.txt": """【行业白皮书】2026年全球云计算（Cloud）架构趋势报告
+    
+    随着企业数字化转型的深入，云计算（Cloud Computing）已经不再仅仅是存储和算力的代名词，它正在演变成一个分布式的操作系统。混合云和边缘计算的结合，使得数据处理可以发生在离用户最近的地方。
+    
+    在这一过程中，数据（Data）安全和治理成为了企业的首要考量。如何确保海量信息在神经（Neural）网络模型训练过程中的隐私不被泄露，是各大厂商竞争的焦点。此外，无服务器架构（Serverless）的流行让开发者可以专注于业务逻辑，而无需关心底层的运维。人工智能（Intelligence）在云资源调度中的应用，也极大地提升了能效比，降低了大型数据中心的运营碳排放。""",
 
     # ==========================================
-    # 类别 3: 人文常识 (关键词: history, culture, art, philosophy, literature, civilization, museum)
+    # 类别 2: FinTech & Economy (关键词: blockchain, bitcoin, payment, finance, wallet, economy, bank, defi)
     # ==========================================
-    "history_renaissance_art.txt": """【艺术史】文艺复兴时期的艺术（Art）与科学
-    达芬奇不仅是画家，更是科学家。这一时期，人类历史（History）迎来了思想的解放，透视法的发明彻底改变了绘画的表现形式。""",
+    "fintech_blockchain_and_web3.txt": """【金融专栏】区块链（Blockchain）技术：不仅仅是数字货币
+    
+    当我们谈论区块链（Blockchain）时，很多人第一反应是比特币（Bitcoin）。但事实上，这项技术的真正潜力在于其去中心化的信任机制。在现代金融（Finance）体系中，中介机构的存在增加了交易的摩擦成本，而区块链通过智能合约实现了点对点的价值转移。
+    
+    去中心化金融（DeFi）的兴起是这一趋势的最有力证明。它允许用户在没有传统银行（Bank）参与的情况下进行借贷、交易和保险。虽然目前该领域仍面临监管和安全挑战，但其对全球经济（Economy）结构的冲击是深远的。特别是跨境支付（Payment）领域，原本需要数天完成的流程，现在可以在几分钟内通过分布式账本完成。这标志着一个更加透明、高效的全球化金融时代的到来。""",
 
-    "museum_guide_paris.txt": """【旅行指南】卢浮宫博物馆（Museum）必看的镇馆之宝
-    除了蒙娜丽莎，卢浮宫还收藏了大量古希腊和古埃及的文物。这些藏品见证了人类文明（Civilization）的辉煌历程。""",
+    "digital_payment_global_trends.txt": """【宏观经济】数字支付（Payment）如何重塑消费社会
+    
+    从纸币到信用卡，再到今天的电子钱包（Digital Wallet），人类支付方式的变革从未停歇。在过去的十年中，移动支付（Payment）已经从一种便利工具变成了现代生活的基础设施。
+    
+    特别是在新兴市场，很多人跳过了银行卡阶段，直接进入了数字银行（Bank）时代。这种跨越式发展极大地促进了普惠金融（Finance）。然而，这种高度数字化的经济（Economy）也带来了新的风险。黑客攻击、隐私泄露以及数字鸿沟问题都需要政府和科技巨头共同解决。同时，各国央行正在测试的数字货币（CBDC）也将进一步巩固区块链（Blockchain）在主权金融体系中的地位。""",
 
-    "philosophy_of_life.txt": """【读书笔记】存在主义哲学（Philosophy）在当代的意义
-    在焦虑的现代社会，阅读萨特和加缪的作品或许能给我们带来内心的平静。思考“存在的意义”并非无用之功。""",
+    "bitcoin_and_the_future_of_gold.txt": """【投资参考】比特币（Bitcoin）：数字时代的黄金还是投机泡沫？
+    
+    比特币（Bitcoin）作为一种去中心化的资产，其稀缺性和不可篡改性吸引了大量机构投资者的关注。在通货膨胀压力持续的背景下，许多人将其视为一种对冲工具。
+    
+    然而，加密货币市场的剧烈波动性也让普通投资者望而却步。监管机构正在努力寻找保护创新与防范风险之间的平衡。与此同时，底层的区块链（Blockchain）技术正在不断演进，以解决高能效和交易速度的问题。无论最终结果如何，比特币已经成功地挑战了我们对“价值存储”的传统定义，并深刻改变了全球金融（Finance）版图。""",
 
-    "chinese_culture_tea.txt": """【文化杂谈】中国茶文化（Culture）的演变
-    从唐代的煎茶到宋代的点茶，再到明清的泡茶。茶不仅是一种饮品，更蕴含了东方哲学（Philosophy）中“天人合一”的思想。""",
+    # ==========================================
+    # 类别 3: Humanities & History (关键词: history, culture, art, philosophy, literature, civilization, museum)
+    # ==========================================
+    "history_of_ancient_civilization.txt": """【历史随笔】被遗忘的古明：人类文明（Civilization）的多样性
+    
+    历史（History）往往是由胜利者书写的，但在荒漠深处和密林之中，依然隐藏着许多失落文明（Civilization）的痕迹。从美索不达米亚的楔形文字到美洲玛雅人的精准历法，每一个文明都对世界有着独特的理解。
+    
+    在现代博物馆（Museum）中，这些破碎的陶片和古老的卷轴告诉我们，人类的智慧并不随着时间的流逝而贬值。通过对这些文化（Culture）遗产的研究，我们可以更好地理解当今世界的冲突与融合。哲学（Philosophy）在这一过程中扮演了重要的角色，它引导我们思考：在不同的历史阶段，人类是如何定义自由与道德的？这些古老的命题在今天依然具有震耳欲聋的生命力。""",
 
-    "literature_nobel_prize.txt": """【文学评论】今年的诺贝尔文学（Literature）奖颁给了谁？
-    评委会表彰了这位作家在探索人类苦难与希望方面的深刻洞察力。好的文学作品能够跨越国界和文化（Culture）的隔阂。""",
+    "modern_art_and_society.txt": """【文化透视】艺术（Art）的边界：当当代审美遇上数字媒体
+    
+    什么是艺术（Art）？在达芬奇时代，这或许是一个关于写实与宗教的问题；但在今天，艺术（Art）可能是一个交互式的投影，或者是一段由 AI 生成的代码。当代艺术不再追求视觉上的绝对美感，而更倾向于挑战观众的思维。
+    
+    各大博物馆（Museum）正在努力转型，利用数字技术让经典的文化（Culture）遗产焕发新生。这种跨越时空的对话，打破了精英文化与大众审美之间的界限。同时，文学（Literature）创作也受到了数字化的冲击，碎片化的阅读习惯正在改变叙事的方式。然而，无论媒介如何变化，人类对于情感共鸣和存在意义的哲学（Philosophy）探索，依然是所有艺术创作最核心的驱动力。""",
 
-    "ancient_civilization_egypt.txt": """【考古发现】古埃及文明（Civilization）的未解之谜
-    金字塔是如何建造的？法老的诅咒真的存在吗？历史（History）学家和考古学家正在利用新技术揭开这些千古谜题。""",
-
-    "modern_art_exhibition.txt": """【展览回顾】当现代艺术（Art）遇上科技
-    这场在当代艺术博物馆（Museum）举办的展览，利用VR技术让观众走进梵高的画作中，体验前所未有的视觉冲击。""",
-
-    "history_silk_road.txt": """【历史回顾】丝绸之路上的文化（Culture）交流
-    这条古老的商路不仅运输丝绸和香料，更是东西方哲学（Philosophy）、宗教和艺术交汇的桥梁。""",
+    "literature_and_cultural_identity.txt": """【文学评论】跨文化背景下的文学（Literature）创作与身份认同
+    
+    在全球化背景下，当代文学（Literature）越来越多地关注流离失所、移民体验以及多元文化（Culture）的碰撞。作家们通过文字，试图在不确定的世界中寻找身份的归属感。
+    
+    这种探索往往带有浓厚的哲学（Philosophy）色彩。历史（History）的长河中，文学始终是记录人类情感最细腻的载体。无论是一个民族的史诗，还是一个普通人的日记，都是文明（Civilization）不可或缺的一部分。博物馆（Museum）中的展品是凝固的历史，而文学则是流动的记忆。通过阅读不同背景的作品，我们得以跨越成见，建立起真正的人文连接。""",
 }
 
 # 写入文件
@@ -98,6 +78,7 @@ for filename, content in news_data.items():
     with open(file_path, "w", encoding='utf-8') as f:
         f.write(content)
     count += 1
-    print(f"✅ 已发布文章: {filename}")
+    print(f"✅ 文章生成成功: {file_path}")
 
-print(f"\n🎉 成功生成 {count} 篇 博客/新闻 文章！")
+print(f"\n🎉 恭喜！已为您扩充并生成了 {count} 篇深度报道文章。")
+print(f"这些文章已经存放在 '{output_dir}' 文件夹中，现在去刷新您的网页吧！")
