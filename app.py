@@ -201,10 +201,10 @@ with st.spinner("Initializing System..."):
 
 # --- 6. 侧边栏 (重构版) ---
 with st.sidebar:
-    st.markdown('<div class="sidebar-title">📂 Navigator</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sidebar-title">Navigator</div>', unsafe_allow_html=True)
     
     # 构造带图标的选项列表
-    nav_options = ["🏠  ALL ARCHIVES"] + [f"🏷️  {cat}" for cat in category_list]
+    nav_options = ["  ALL ARCHIVES"] + [f"  {cat}" for cat in category_list]
     
     # 使用 Radio 但 CSS 已经魔改成导航条样式
     selected_option = st.radio(
@@ -250,8 +250,8 @@ with st.sidebar:
     st.caption("System v3.0 | Azure Theme")
 
 # --- 7. 主界面 ---
-st.markdown("## 🔎 Information Retrieval")
-st.markdown("检索存档中的专业资讯与文档")
+st.markdown("## Information Retrieval")
+st.markdown("检索存档中的专业资讯与文档，涵盖AI、金融科技与人文历史等领域知识")
 
 search_col1, search_col2 = st.columns([5, 1], vertical_alignment="bottom")
 with search_col1:
