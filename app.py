@@ -17,167 +17,147 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# --- 3. UI/UX 深度定制 ---
+# --- 3. UI/UX 深度定制 (核心修改区域) ---
 st.markdown("""
 <style>
-    /* 1. 全局背景统一 */
+    /* === 全局与容器设置 === */
     .stApp {
-        background-color: #F0F7FF;
+        background-color: #F4F8FB; /* 更柔和的灰蓝色背景 */
     }
     
-    header[data-testid="stHeader"] {
-        background-color: #F0F7FF;
-    }
-    
-    .block-container {
-        padding-top: 2rem;
-        padding-bottom: 2rem;
-    }
-    
-    /* 2. 侧边栏整体背景 */
+    /* === 侧边栏样式 === */
     [data-testid="stSidebar"] {
-        background-color: #EBF4FF;
-        border-right: 1px solid #D6E4F0;
-    }
-    
-    /* === Navigator 标题 (方框、居中) === */
-    .nav-header-box {
         background-color: #FFFFFF;
-        border: 2px solid #2B6CB0; /* 深蓝色边框 */
-        border-radius: 8px;
-        padding: 10px;
+        border-right: 1px solid #E2E8F0;
+    }
+
+    /* 1. Navigator 标题方框 */
+    .nav-box {
+        background-color: #F7FAFC;
+        border: 2px solid #3182CE;
+        color: #3182CE;
+        padding: 12px;
         text-align: center;
-        margin-bottom: 25px;
-        color: #2B6CB0;
-        font-family: 'Inter', sans-serif;
         font-weight: 800;
-        font-size: 1.1rem;
+        font-family: 'Arial', sans-serif;
+        border-radius: 6px;
+        margin-bottom: 30px;
         letter-spacing: 1px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        box-shadow: 0 2px 4px rgba(49, 130, 206, 0.1);
+    }
+
+    /* === 2. 侧边栏导航按钮 (Radio 改造成的方块) === */
+    
+    /* 核心：去除默认样式 */
+    [data-testid="stSidebar"] [data-testid="stRadio"] label {
+        padding: 0 !important;
+        background: transparent !important;
+        margin-bottom: 8px !important;
     }
     
-    /* === 侧边栏导航按钮化改造 (方框样式) === */
-    
-    /* 隐藏原生单选按钮的圆圈输入框 */
+    /* 隐藏圆圈 */
     [data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] label input {
-        display: none; 
+        display: none;
     }
-    
-    /* 隐藏原生单选按钮圆圈的占位 div (防止左侧留白) */
     [data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] label > div:first-child {
         display: none !important;
     }
 
-    /* 选项容器基础样式 (未选中状态 - 白色方框) */
+    /* 按钮容器 - 未选中状态 */
     [data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] > label {
-        background-color: #FFFFFF;
-        border: 1px solid #CBD5E0;
+        background-color: #FFFFFF !important;
+        border: 1px solid #E2E8F0 !important;
+        color: #718096 !important;
         border-radius: 6px;
-        padding: 12px 0px; /* 上下内边距 */
-        margin-bottom: 10px;
+        padding: 12px 0 !important;
+        width: 100% !important; /* 强制填满宽度 */
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
         transition: all 0.2s ease;
-        color: #4A5568;
-        font-weight: 600;
-        display: flex;
-        justify-content: center; /* 文字居中 */
-        align-items: center;
-        width: 100%;
-        cursor: pointer;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        box-shadow: 0 1px 2px rgba(0,0,0,0.02);
     }
     
-    /* 鼠标悬停效果 */
+    /* 悬停效果 */
     [data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] > label:hover {
-        border-color: #3182CE;
-        color: #3182CE;
-        background-color: #F7FAFC;
-    }
-    
-    /* 选中状态 (蓝色背景方框) */
-    [data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] > label[data-checked="true"] {
-        background-color: #3182CE !important;
-        color: white !important;
         border-color: #3182CE !important;
-        box-shadow: 0 4px 6px rgba(49, 130, 206, 0.3);
+        color: #3182CE !important;
+        background-color: #F0F7FF !important;
+        cursor: pointer;
+    }
+
+    /* === 选中状态 (高亮) === */
+    [data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] > label[data-checked="true"] {
+        background-color: #3182CE !important; /* 深蓝色背景 */
+        color: white !important; /* 白色文字 */
+        border: 1px solid #3182CE !important;
+        font-weight: 600 !important;
+        box-shadow: 0 4px 10px rgba(49, 130, 206, 0.3);
+        transform: translateY(-1px);
     }
     
-    /* 调整 Markdown 容器以确保文字完全居中 */
+    /* 修复文字在方框内的对齐 */
     [data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] > label [data-testid="stMarkdownContainer"] {
-        display: flex;
-        justify-content: center;
         width: 100%;
-    }
-    
-    [data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] > label [data-testid="stMarkdownContainer"] p {
-        margin: 0; /* 移除文字默认边距 */
-        font-size: 0.95rem;
-    }
-
-    /* 3. 统计卡片样式 */
-    .metric-card {
-        background-color: #FFFFFF;
-        border-radius: 8px;
-        padding: 15px;
         text-align: center;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        border: 1px solid #E2E8F0;
-        margin-bottom: 10px;
     }
-    .metric-value {
-        font-size: 24px;
-        font-weight: bold;
-        color: #2C5282;
-    }
-    .metric-label {
-        font-size: 12px;
-        color: #718096;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
+    [data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] > label [data-testid="stMarkdownContainer"] p {
+        margin: 0;
+        font-size: 14px;
     }
 
-    /* 4. 搜索结果样式 */
-    .result-item {
-        background-color: #FFFFFF;
-        padding: 24px;
-        margin-bottom: 16px;
-        border-radius: 12px;
-        border: 1px solid #E6F0FA;
-        box-shadow: 0 2px 8px rgba(26, 54, 93, 0.03);
-        transition: transform 0.2s;
-    }
-    .result-item:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(26, 54, 93, 0.08);
-    }
-    .result-title {
-        font-size: 1.2rem;
+    /* === 3. 搜索按钮美化 === */
+    
+    /* 定制 Streamlit 按钮 */
+    div.stButton > button {
+        background: linear-gradient(90deg, #3182CE 0%, #2B6CB0 100%);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        height: 48px; /* 强制高度与输入框一致 */
         font-weight: 600;
-        color: #2B6CB0;
-        margin-bottom: 8px;
-    }
-    .cat-tag {
-        background-color: #EBF8FF;
-        color: #2C5282;
-        padding: 4px 12px;
-        border-radius: 20px;
-        font-size: 0.75rem;
-        font-weight: 600;
+        width: 100%;
+        margin-top: 1px; /* 微调垂直对齐 */
+        transition: all 0.2s;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
     
-    div.stButton > button {
-        background-color: #3182CE;
-        color: white;
+    div.stButton > button:hover {
+        background: linear-gradient(90deg, #2B6CB0 0%, #2C5282 100%);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        transform: translateY(-1px);
+    }
+    
+    div.stButton > button:active {
+        transform: translateY(1px);
+        box-shadow: none;
+    }
+
+    /* 4. 统计卡片微调 */
+    .metric-card {
+        background-color: white;
+        border: 1px solid #E2E8F0;
         border-radius: 8px;
-        height: 46px;
+        padding: 10px;
+        text-align: center;
+    }
+    
+    /* 5. 结果卡片 */
+    .result-item {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        border-left: 4px solid #3182CE; /* 左侧蓝色条装饰 */
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        margin-bottom: 15px;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# --- 4. 核心逻辑 ---
+# --- 4. 核心逻辑 (保持不变) ---
 @st.cache_resource
 def initialize_system():
-    # 模拟数据模式，防止报错 (如果此行不需要可删除，保留原始逻辑)
-    # 真实环境请确保 docs/ 文件夹存在且有文件
+    # 模拟逻辑：如果 docs 文件夹为空，您可以手动放入一些 txt 文件测试
     embeddings = HuggingFaceEmbeddings(model_name="BAAI/bge-small-zh-v1.5")
     
     if not os.path.exists('docs/'):
@@ -190,7 +170,7 @@ def initialize_system():
         return None, None, []
 
     categorized_docs = []
-    # 关键词定义
+    # 简单的关键词分类逻辑
     ai_keywords = ['learning', 'neural', 'intelligence', 'gpt', 'python', 'data', 'cloud']
     fintech_keywords = ['blockchain', 'bitcoin', 'payment', 'finance', 'wallet', 'economy', 'bank']
     humanities_keywords = ['history', 'culture', 'art', 'philosophy', 'literature', 'civilization', 'museum']
@@ -222,27 +202,26 @@ def initialize_system():
 with st.spinner("Initializing System..."):
     vector_db, raw_docs, category_list = initialize_system()
 
-# --- 6. 侧边栏 (重构版 - 方框风格) ---
+# --- 6. 侧边栏 (UI 更新) ---
 with st.sidebar:
-    # 1. 标题改为方框样式
-    st.markdown('<div class="nav-header-box">NAVIGATOR</div>', unsafe_allow_html=True)
+    # Navigator 标题方框
+    st.markdown('<div class="nav-box">NAVIGATOR</div>', unsafe_allow_html=True)
     
-    # 2. 构造纯文字列表（无 Emoji）
+    # 导航选项 (纯文本)
     nav_options = ["ALL ARCHIVES"] + category_list
     
-    # 3. Radio 组件，CSS 已经将其魔改为方框按钮
+    # 这里的 key 很重要，确保状态同步
     selected_option = st.radio(
         "Navigation", 
         nav_options, 
         label_visibility="collapsed"
     )
     
-    # 4. 直接赋值，不需要字符串切片
     selected_category = selected_option
 
-    st.markdown("---")
+    st.markdown("<br>", unsafe_allow_html=True)
     
-    # 5. 统计卡片
+    # 统计信息
     col1, col2 = st.columns(2)
     
     total_count = len(raw_docs) if raw_docs else 0
@@ -253,30 +232,37 @@ with st.sidebar:
     with col1:
         st.markdown(f"""
         <div class="metric-card">
-            <div class="metric-value">{total_count}</div>
-            <div class="metric-label">Total Docs</div>
+            <div style="font-size:20px; font-weight:bold; color:#2D3748;">{total_count}</div>
+            <div style="font-size:10px; color:#718096;">TOTAL</div>
         </div>
         """, unsafe_allow_html=True)
         
     with col2:
         st.markdown(f"""
         <div class="metric-card">
-            <div class="metric-value">{current_count}</div>
-            <div class="metric-label">Current</div>
+            <div style="font-size:20px; font-weight:bold; color:#3182CE;">{current_count}</div>
+            <div style="font-size:10px; color:#718096;">CURRENT</div>
         </div>
         """, unsafe_allow_html=True)
 
-    st.markdown("<br>", unsafe_allow_html=True)
-    st.caption("System v3.1 | Box Style")
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    st.caption("System v3.2 | High Contrast UI")
 
-# --- 7. 主界面 ---
+# --- 7. 主界面 (搜索栏优化) ---
 st.markdown("## 🔎 Information Retrieval")
 st.markdown("检索存档中的专业资讯与文档")
 
+st.markdown("<br>", unsafe_allow_html=True)
+
+# 使用 columns 布局，vertical_alignment="bottom" 确保按钮和输入框底部对齐
 search_col1, search_col2 = st.columns([5, 1], vertical_alignment="bottom")
+
 with search_col1:
+    # 搜索框
     query = st.text_input("Search Query", placeholder="输入关键词...", label_visibility="collapsed")
+
 with search_col2:
+    # 搜索按钮 - CSS 已经将其高度设为 48px 以匹配输入框
     search_btn = st.button("Search", use_container_width=True)
 
 st.markdown("---")
@@ -309,14 +295,16 @@ if (query or search_btn) and vector_db:
                     full_content = raw_doc.page_content
                     break
 
+            # 结果卡片样式优化
             st.markdown(f"""
             <div class="result-item">
-                <div class="result-title">📄 {file_name}</div>
-                <div style="margin-bottom:10px;">
-                    <span class="cat-tag">{cat_tag}</span>
-                    <span style="color:#A0AEC0; font-size:0.8rem; margin-left:10px;">相关度匹配</span>
+                <div style="font-size:1.1rem; font-weight:bold; color:#2B6CB0; margin-bottom:5px;">
+                    📄 {file_name}
                 </div>
-                <div style="color:#4A5568; line-height:1.6;">
+                <div style="margin-bottom:12px;">
+                    <span style="background:#EBF8FF; color:#2C5282; padding:3px 8px; border-radius:4px; font-size:12px; font-weight:bold;">{cat_tag}</span>
+                </div>
+                <div style="color:#4A5568; font-size:14px; line-height:1.6;">
                     {doc.page_content}... 
                 </div>
             </div>
