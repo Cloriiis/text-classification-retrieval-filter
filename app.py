@@ -71,6 +71,28 @@ st.markdown("""
     div.stButton > button:hover {
         background-color: #006666;
     }
+
+    /* 侧边栏类别选择：将 Radio 渲染为方框交互 */
+    [data-testid="stSidebar"] [data-testid="stRadio"] > div {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    [data-testid="stSidebar"] [role="radio"] {
+        padding: 8px 12px;
+        border: 1px solid #D0D0D0;
+        border-radius: 6px;
+        background-color: #FFFFFF;
+        color: #333333;
+        transition: background-color .2s ease, color .2s ease, border-color .2s ease;
+    }
+    [data-testid="stSidebar"] [role="radio"][aria-checked="true"] {
+        background-color: #2F3C56; /* 深色选中态 */
+        color: #FFFFFF;
+        border-color: #2F3C56;
+    }
+    /* 隐藏默认圆点图标 */
+    [data-testid="stSidebar"] [role="radio"] svg { display: none; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -113,8 +135,8 @@ def initialize_system():
         categorized_docs.append(doc)
 
     # 强制定义分类列表顺序 (解决分类显示不全的问题)
-    # 即使文件夹里没有文件，这些选项也会显示，保证 UI 结构完整
-    fixed_categories = ["AI & Technology", "FinTech & Economy", "Humanities & History", "General / Uncategorized"]
+    # UI层不展示 General 类别，仅保留三大分类
+    fixed_categories = ["AI & Technology", "FinTech & Economy", "Humanities & History"]
 
     # 切分文档
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=300, chunk_overlap=50)
@@ -131,12 +153,13 @@ with st.spinner("Initializing Archives..."):
 
 # --- 6. 侧边栏：控制面板风格 ---
 with st.sidebar:
-    st.markdown("### 🗂️ Document Navigator")
+    st.markdown("### Navigator")
     
-    # 使用 Radio 组件但样式更简洁
+    # 使用 Radio 组件并通过CSS渲染为方框选择
     selected_category = st.radio(
         "Select Category:",
-        ["ALL ARCHIVES"] + category_list
+        ["ALL ARCHIVES"] + category_list,
+        label_visibility="collapsed"
     )
     
     st.markdown("---")
@@ -157,7 +180,7 @@ with st.sidebar:
 
 # --- 7. 主界面：搜索引擎风格 ---
 
-st.markdown("## 🔎 Information Retrieval System")
+st.markdown("## Information Retrieval System")
 st.markdown("Type keywords to search across the categorized database.")
 
 # 搜索栏布局：更像 Google
@@ -199,7 +222,7 @@ if (query or search_btn) and vector_db:
             # 使用 HTML 构建“谷歌学术”风格的列表
             st.markdown(f"""
             <div class="result-item">
-                <div class="result-title">📄 {file_name}</div>
+                <div class="result-title">{file_name}</div>
                 <div class="result-meta">
                     <span style="background-color: #E0F2F1; color: #00695C; padding: 2px 6px; border-radius: 4px;">{cat_tag}</span>
                     &nbsp; • &nbsp; Relevance Match
