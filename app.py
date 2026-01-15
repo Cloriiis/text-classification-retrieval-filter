@@ -218,7 +218,7 @@ with st.sidebar:
         selected_category = "ALL ARCHIVES"
     else:
         # 去掉图标前缀 "🏷️  " (长度为4)
-        selected_category = selected_option[4:]
+        selected_category = selected_option[2:]
 
     st.markdown("---")
     
